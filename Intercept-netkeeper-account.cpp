@@ -1,4 +1,4 @@
-// Intercept-netkeeper-account.cpp : ¶¨Òå¿ØÖÆÌ¨Ó¦ÓÃ³ÌĞòµÄÈë¿Úµã¡£
+// Intercept-netkeeper-account.cpp : å®šä¹‰æ§åˆ¶å°åº”ç”¨ç¨‹åºçš„å…¥å£ç‚¹ã€‚
 //
 
 #include "stdafx.h"
@@ -15,7 +15,7 @@ ref class Listener
 {
 private:
 
-	// ÊÂ¼ş·¢ÉúĞÅºÅ
+	// äº‹ä»¶å‘ç”Ÿä¿¡å·
 	static AutoResetEvent^ signal;
 
 public:
@@ -27,37 +27,36 @@ public:
 		NewLog->Source = "RasClient";
 		NewLog->EntryWritten += gcnew EntryWrittenEventHandler(EntryWritten);
 		NewLog->EnableRaisingEvents = true;
-		NewLog->WriteEntry("Test message", EventLogEntryType::Information);
 		signal->WaitOne();
 	}
 
 	static void EntryWritten(Object^ source, EntryWrittenEventArgs^ e)
 	{
 
-		Console::WriteLine("À¹½Øµ½Ò»¸öÊÂ¼ş£¬ID={0}", e->Entry->InstanceId);
-		//ÅĞ¶ÏÊÇ·ñÊÇÏëÒªµÄÊÂ¼şID£¬ÆäËûµØÇø¿ÉÒÔÑ¡ÔñÏàÓ¦µÄID
+		Console::WriteLine("æ‹¦æˆªåˆ°ä¸€ä¸ªäº‹ä»¶ï¼ŒID={0}", e->Entry->InstanceId);
+		//åˆ¤æ–­æ˜¯å¦æ˜¯æƒ³è¦çš„äº‹ä»¶IDï¼Œå…¶ä»–åœ°åŒºå¯ä»¥é€‰æ‹©ç›¸åº”çš„ID
 		if (e->Entry->InstanceId == 20221)
 		{
-			//±£´æµ½±¾µØ×÷Îª±¸ÓÃ
+			//ä¿å­˜åˆ°æœ¬åœ°ä½œä¸ºå¤‡ç”¨
 			String^ fileName = "log.txt";
 			StreamWriter^ sw = gcnew StreamWriter(fileName);
-			sw->WriteLine("ÒÑ½Ø»ñµÄĞÅÏ¢:Id={0},Message={1}", e->Entry->InstanceId, e->Entry->Message);
+			sw->WriteLine("å·²æˆªè·çš„ä¿¡æ¯:Id={0},Message={1}", e->Entry->InstanceId, e->Entry->Message);
 			sw->WriteLine(DateTime::Now);
 			sw->Close();
 
-			//Ö»½ØÈ¡ĞèÒªµÄÕËºÅ²¿·Ö
+			//åªæˆªå–éœ€è¦çš„è´¦å·éƒ¨åˆ†
 			String^ str = e->Entry->Message;
 			int start = str->IndexOf("Dial-in User = ");
 			int length = str->IndexOf("VpnStrategy");
 			String^ card = str->Substring(start, length - start - 1);
 
-			//Êä³öĞèÒªµÄÕËºÅµ½¿ØÖÆÌ¨
-			Console::WriteLine("´ËÊÂ¼şÓĞĞ§£¬Çë¸´ÖÆÒÔÏÂÕËºÅ\n{0}", card);
+			//è¾“å‡ºéœ€è¦çš„è´¦å·åˆ°æ§åˆ¶å°
+			Console::WriteLine("æ­¤äº‹ä»¶æœ‰æ•ˆï¼Œè¯·å¤åˆ¶ä»¥ä¸‹è´¦å·\n{0}", card);
 			Console::WriteLine("**************************\n");
 		}
 		else
 		{
-			Console::WriteLine("´ËÊÂ¼şÎŞĞ§£¬ÇëÖØĞÂ²¦ºÅ");
+			Console::WriteLine("æ­¤äº‹ä»¶æ— æ•ˆï¼Œè¯·é‡æ–°æ‹¨å·");
 			Console::WriteLine("**************************\n");
 		}
 		signal->Set();
@@ -67,15 +66,15 @@ public:
 int main()
 {
 	cout << "Made By LinKey0811\nhttps://github.com/LinKey0811 \n***************" << endl;
-	//ÊäÈëÀ¹½Ø¿ØÖÆ
+	//è¾“å…¥æ‹¦æˆªæ§åˆ¶
 	int contral;
-	cout << "ÇëÊäÈë 1 ¿ªÊ¼À¹½Ø£¬ÊäÈë 0 ¹Ø±Õ\n";
+	cout << "è¯·è¾“å…¥ 1 å¼€å§‹æ‹¦æˆªï¼Œè¾“å…¥ 0 å…³é—­\n";
 	do
 	{
 		cin >> contral;
 		if (contral == 1)
 		{
-			cout << "À¹½Ø¿ªÊ¼£¬Çë²¦ºÅ\n=====================\n" << endl;
+			cout << "æ‹¦æˆªå¼€å§‹ï¼Œè¯·æ‹¨å·\n=====================\n" << endl;
 			Listener::main();
 		}
 	} while (contral == 1);
