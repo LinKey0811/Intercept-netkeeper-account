@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Diagnostics;
 using System.Threading;
-
 namespace INA_by_cs
 {
     public class EventListen
